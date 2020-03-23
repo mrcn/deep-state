@@ -7,10 +7,11 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi",
-    "dev": "next",
-    "next-build": "next build",
-    "next-start": "next start"
+    "strapi": "strapi"
+    // "dev": "next",
+    // "build": "next build",
+    // "start": "next start"
+  }
   },
   "devDependencies": {},
   "dependencies": {
@@ -27,7 +28,7 @@
     "sqlite3": "latest"
   },
   "author": {
-    "name": "aaaf"
+    "name": "A Strapi developer"
   },
   "strapi": {
     "uuid": "891ec0a1-7c45-4a89-8e4f-3424d1a34bc6"
