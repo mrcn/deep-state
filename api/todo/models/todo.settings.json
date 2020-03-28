@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "todos",
+  "info": {
+    "name": "todo"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    }
+  }
+}
