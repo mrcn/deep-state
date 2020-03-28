@@ -1,89 +1,53 @@
 import Router from 'next/router';
-import ReactDOM from 'react-dom';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 
-const endpoint = 'http://localhost:1337/todos';
+const endpoint = 'http://localhost:1337/auth/local';
 
 export default () => {
-  const titleRef = useRef();
-  const jwtRef = useRef();
-  const [todos, setTodos] = useState([]);
+  const loginRef = useRef();
+  const pwdRef = useRef();
+  const [error, setError] = useState('');
 
-  const getTodos = async () => {
-    const res = await fetch(endpoint, {
-      headers: {
-        Authorization: `Bearer ${jwtRef.current}`,
-      },
-    }).then(r => r.json());
-    setTodos(res);
-  };
+  console.log(loginRef, pwdRef);
 
-  useEffect(() => {
-    const jwt = window.sessionStorage.getItem('jwt');
-    if (!jwt) {
-      Router.push('/login');
+  const login = async () => {
+    const identifier = loginRef.current.value;
+    const password = pwdRef.current.value;
+
+    try {
+      const {jwt, user} = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier,
+          password,
+        }),
+      }).then(res => {
+        if (res.status !== 200) {
+          throw new Error('Error logging in, non 200 code');
+        }
+        return res.json();
+      });
+
+      window.sessionStorage.setItem('jwt', jwt);
+      window.sessionStorage.setItem('user', JSON.stringify(user));
+
+      Router.push('/');
+    } catch (e) {
+      setError(e.toString());
     }
-    jwtRef.current = jwt;
-
-    // fetch the list of todos
-    getTodos();
-  }, []);
-
-  const createTodo = async () => {
-    const title = titleRef.current.value;
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${jwtRef.current}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-      }),
-    }).then(r => r.json());
-
-    const newTodos = [...todos, res];
-    setTodos(newTodos);
-  };
-
-  const toggleTodo = async (todo, checked) => {
-    const res = await fetch(`${endpoint}/${todo.id}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${jwtRef.current}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        done: checked,
-      }),
-    }).then(r => r.json());
-
-    const newTodos = todos.map(t => {
-      if (t.id === todo.id) {
-        return res;
-      }
-      return t;
-    });
-    setTodos(newTodos);
   };
 
   return (
-    <div>
-      <div style={{display: 'flex', flexDirection: 'column', width: 200}}>
-        <input type="text" placeholder="Title" ref={titleRef} />
-        <button onClick={() => createTodo()}>Create todo</button>
+    <>
+      <div style={{display: 'flex', flexDirection: 'column', width: 300}}>
+        <input type="text" placeholder="Username or email" ref={loginRef} />
+        <input type="password" placeholder="Password" ref={pwdRef} />
+        <button onClick={() => login()}>Login</button>
       </div>
-
-      <div>
-        <h2>Todos list:</h2>
-        {todos.map(todo => (
-          <div key={todo.title} style={{display: 'flex', alignItems: 'center'}}>
-            <input type="checkbox" checked={todo.done} onChange={e => toggleTodo(todo, e.target.checked)} />
-            {todo.title}
-          </div>
-        ))}
-      </div>
-    </div>
+      {error && <div style={{border: '1px red solid'}}>{error}</div>}
+    </>
   );
 };
