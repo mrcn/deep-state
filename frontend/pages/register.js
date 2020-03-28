@@ -47,7 +47,6 @@ export default () => {
 
   return (
     <div>
-      <h1>welcome home</h1>
       <div style={{display: 'flex', flexDirection: 'column', width: 300}}>
         <input type="text" placeholder="Login" ref={loginRef} />
         <input type="text" placeholder="Email" ref={emailRef} />
