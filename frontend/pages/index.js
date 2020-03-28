@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 export default () => {
   //what is useEffect in react?
@@ -9,6 +9,12 @@ export default () => {
       Router.push('/login');
     }
   }, []);
-}
 
-//add index
+  return (
+    <div style={{display: "flex", flexDirection: "column", width: 200}}>
+      <input type="text" placeholder="tile" />
+
+      <button>Create todo</button>
+    </div>
+  )
+}
