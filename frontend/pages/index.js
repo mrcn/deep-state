@@ -9,6 +9,7 @@ export default () => {
   const pwdRef = useRef();
   const [error, setError] = useState('');
 
+  // Using fetch to pass the values to the Strapi API
   const register = async () => {
     const username = loginRef.current.value;
     const email = emailRef.current.value;
@@ -16,7 +17,7 @@ export default () => {
 
     console.log({username, email, password});
 
-
+    // error handling
     try {
       const {jwt, user} = await fetch(endpoint, {
         method: 'POST',
