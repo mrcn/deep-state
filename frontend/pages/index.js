@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 export default () => {
   //what is useEffect in react?
