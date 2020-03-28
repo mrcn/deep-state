@@ -17,25 +17,6 @@ export default () => {
     jwtRef.current = jwt;
   }, []);
 
-
-  const createTodo = async () => {
-    const title = titleRef.current.value;
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${jwtRef.current}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-      }),
-    }).then(r => r.json());
-
-    const newTodos = [...todos, res];
-    setTodos(newTodos);
-  };
-
   return (
     <div>
       <div style={{display: "flex", flexDirection: "column", width: 200}}>
@@ -51,5 +32,5 @@ export default () => {
       </div>
     </div>
   )
-  // what is stringify? 
 }
+// what is stringify
