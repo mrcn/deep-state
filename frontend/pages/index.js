@@ -14,6 +14,9 @@ export default () => {
     const email = emailRef.current.value;
     const password = pwdRef.current.value;
 
+    console.log({username, email, password});
+
+
     try {
       const {jwt, user} = await fetch(endpoint, {
         method: 'POST',
@@ -42,7 +45,7 @@ export default () => {
   };
 
   return (
-    <>
+    <div>
       <div style={{display: 'flex', flexDirection: 'column', width: 300}}>
         <input type="text" placeholder="Login" ref={loginRef} />
         <input type="text" placeholder="Email" ref={emailRef} />
@@ -50,6 +53,6 @@ export default () => {
         <button onClick={() => register()}>Register</button>
       </div>
       {error && <div style={{border: '1px red solid'}}>{error}</div>}
-    </>
+    </div>
   );
 };
